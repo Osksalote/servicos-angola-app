@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Serviços Angola – versão de teste</title>
   <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
   <style>
     :root { --green:#0B6E4F; --dark:#084C37; --amber:#F2A541; --page:#F5F7F4; --ink:#1B2420; --line:#DDE3DE; }
     * { box-sizing: border-box; }
@@ -22,6 +23,17 @@
     .amber { background:var(--amber); color:#1B2420; }
     ol { margin:8px 0 0; padding-left:20px; }
     .note { font-size:14px; color:#555; }
+    .steps { margin:10px 0 0; padding:0; list-style:none; counter-reset:s; }
+    .steps li { counter-increment:s; display:flex; gap:12px; align-items:flex-start; padding:8px 0; border-top:1px solid var(--line); }
+    .steps li:first-child { border-top:0; }
+    .steps li::before { content:counter(s); flex:none; width:26px; height:26px; border-radius:50%; background:var(--green);
+                        color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; }
+    .share { display:inline-block; vertical-align:-3px; width:18px; height:18px; }
+    .tag { display:inline-block; font-size:12px; font-weight:700; background:#E3F1EA; color:var(--green);
+           padding:2px 8px; border-radius:20px; margin-left:6px; vertical-align:2px; }
+    .warn { background:#FFF1D9; border:1px solid #F5D49A; border-radius:12px; padding:10px 12px; font-size:14px; margin-top:12px; }
+    main { display:flex; flex-direction:column; }
+    .ios-first #ios { order:-1; }
   </style>
 </head>
 <body>
@@ -36,6 +48,20 @@
       <p class="note">Funciona em qualquer telemóvel ou computador. No telemóvel, use “Adicionar ao ecrã principal” para ficar como uma aplicação.</p>
       <a class="btn primary" href="../">Abrir a aplicação</a>
     </div>
+    <div class="card" id="ios">
+      <h2>Instalar no iPhone <span class="tag">iPhone / iPad</span></h2>
+      <p class="note">No iPhone a aplicação instala-se a partir do Safari. Fica com o ícone no ecrã principal e abre em ecrã inteiro, como qualquer aplicação.</p>
+      <ol class="steps note">
+        <li><span>Abra este endereço no <b>Safari</b>: <b>osksalote.github.io/servicos-angola-app</b></span></li>
+        <li><span>Toque no botão <b>Partilhar</b>
+          <svg class="share" viewBox="0 0 24 24" fill="none" stroke="#0B6E4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Partilhar"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M6 11v9h12v-9"/></svg>
+          (em baixo no ecrã, ou em cima no iPad).</span></li>
+        <li><span>Deslize e toque em <b>“Adicionar ao ecrã principal”</b>.</span></li>
+        <li><span>Toque em <b>“Adicionar”</b>. O ícone do Serviços Angola aparece no ecrã principal.</span></li>
+      </ol>
+      <div class="warn" id="not-safari" hidden>Está a usar outro navegador. Copie o endereço e abra-o no <b>Safari</b> para poder instalar.</div>
+      <a class="btn primary" href="../">Abrir a aplicação</a>
+    </div>
     <div class="card">
       <h2>Instalar no Android</h2>
       <a class="btn amber" href="servicos-angola.apk" download>Descarregar a aplicação (APK)</a>
@@ -47,5 +73,14 @@
     </div>
     <p class="note" style="text-align:center">Encontrou um problema? Toque em “Ajuda” dentro da aplicação e conte-nos.</p>
   </main>
+  <script>
+    // iPhone/iPad: show the iPhone instructions first (and warn if not in Safari).
+    var ua = navigator.userAgent;
+    var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (ios) {
+      document.querySelector('main').classList.add('ios-first');
+      if (/CriOS|FxiOS|EdgiOS|OPiOS|GSA/.test(ua)) document.getElementById('not-safari').hidden = false;
+    }
+  </script>
 </body>
 </html>

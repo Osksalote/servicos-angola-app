@@ -13,10 +13,12 @@
   <meta name="theme-color" content="#0B6E4F">
 
   <!-- iOS meta tags & icons -->
+  <!-- "Add to Home Screen" (Android and iPhone): opens full screen like an app. -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Serviços Angola">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
@@ -41,6 +43,18 @@
       animation: spin .9s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    /* iPhone: "install the app" hint (Safari only, until installed or closed). */
+    #ios-install {
+      position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
+      z-index: 2147483647; display: none; gap: 10px; align-items: center;
+      background: #fff; color: #1B2420; border: 1px solid #DDE3DE; border-radius: 16px;
+      box-shadow: 0 8px 28px rgba(0,0,0,.18); padding: 12px 12px 12px 14px;
+      font: 14px/1.4 Roboto, -apple-system, Arial, sans-serif;
+    }
+    #ios-install img { width: 40px; height: 40px; border-radius: 10px; flex: none; }
+    #ios-install b { color: #0B6E4F; }
+    #ios-install button { flex: none; border: 0; background: #F5F7F4; border-radius: 50%; width: 32px; height: 32px;
+                          font-size: 18px; line-height: 32px; color: #555; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -71,6 +85,28 @@
       var el = document.getElementById('loading');
       if (el) { el.style.opacity = '0'; setTimeout(function () { el.remove(); }, 300); }
     });
+  </script>
+  <div id="ios-install" role="dialog" aria-label="Instalar no iPhone">
+    <img src="icons/apple-touch-icon.png" alt="">
+    <div>Instale no iPhone: toque em <b>Partilhar</b>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B6E4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M6 11v9h12v-9"/></svg>
+      e depois em <b>“Adicionar ao ecrã principal”</b>.</div>
+    <button type="button" aria-label="Fechar" onclick="document.getElementById('ios-install').style.display='none';try{localStorage.setItem('iosInstallHidden','1')}catch(e){}">×</button>
+  </div>
+  <script>
+    // Show the iPhone install hint in Safari, only when the app isn't installed yet.
+    (function () {
+      var ua = navigator.userAgent;
+      var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      var safari = ios && !/CriOS|FxiOS|EdgiOS|OPiOS|GSA/.test(ua);
+      var installed = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+      var hidden = false; try { hidden = localStorage.getItem('iosInstallHidden') === '1'; } catch (e) {}
+      if (safari && !installed && !hidden) {
+        window.addEventListener('flutter-first-frame', function () {
+          setTimeout(function () { document.getElementById('ios-install').style.display = 'flex'; }, 2500);
+        });
+      }
+    })();
   </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
