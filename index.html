@@ -23,6 +23,13 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
+  <!-- Speed on slow internet: open the connections and start the big
+       download straight away, in parallel with the rest of the page. -->
+  <link rel="preconnect" href="https://xgyfhrkqdojnrbgqkoir.supabase.co">
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="main.dart.js" as="script">
+
   <title>Serviços Angola</title>
   <link rel="manifest" href="manifest.json">
 
@@ -43,6 +50,15 @@
       animation: spin .9s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    /* "New version" bar (top of the screen). */
+    #sa-update {
+      position: fixed; top: calc(10px + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%);
+      z-index: 2147483647; display: none; align-items: center; gap: 12px; white-space: nowrap;
+      background: #084C37; color: #fff; border-radius: 30px; padding: 8px 8px 8px 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25); font: 14px Roboto, -apple-system, Arial, sans-serif;
+    }
+    #sa-update button { border: 0; border-radius: 20px; background: #F2A541; color: #1B2420; font-weight: 700;
+                        padding: 8px 14px; font-size: 14px; cursor: pointer; }
     /* iPhone: "install the app" hint (Safari only, until installed or closed). */
     #ios-install {
       position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
@@ -107,6 +123,38 @@
         });
       }
     })();
+  </script>
+  <div id="sa-update" role="status">
+    <span>Nova versão disponível.</span>
+    <button type="button" id="sa-update-btn">Atualizar</button>
+  </div>
+  <script>
+    // Keep the app on the phone after the first visit (see sa_sw.js).
+    // Not on the computer during development (flutter run).
+    if ('serviceWorker' in navigator && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sa_sw.js').then(function (reg) {
+          function offer(worker) {
+            // A new version is saved and ready: offer to switch now.
+            if (!worker || !navigator.serviceWorker.controller) return;
+            var bar = document.getElementById('sa-update');
+            bar.style.display = 'flex';
+            document.getElementById('sa-update-btn').onclick = function () { worker.postMessage('SKIP_WAITING'); };
+          }
+          if (reg.waiting) offer(reg.waiting);
+          reg.addEventListener('updatefound', function () {
+            var w = reg.installing;
+            if (w) w.addEventListener('statechange', function () { if (w.state === 'installed') offer(w); });
+          });
+        }).catch(function () {});
+        var reloading = false;
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          if (reloading || !window.__saHadController) return;
+          reloading = true; location.reload();
+        });
+        window.__saHadController = !!navigator.serviceWorker.controller;
+      });
+    }
   </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
