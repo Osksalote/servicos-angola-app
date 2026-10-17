@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Serviços Angola – versão de teste</title>
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <style>
+    :root { --green:#0B6E4F; --dark:#084C37; --amber:#F2A541; --page:#F5F7F4; --ink:#1B2420; --line:#DDE3DE; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--page); color:var(--ink); font-family: Roboto, Arial, sans-serif; line-height:1.5; }
+    header { background:linear-gradient(var(--dark), var(--green)); color:#fff; padding:32px 16px 40px; text-align:center; }
+    header img { width:88px; height:88px; }
+    h1 { margin:12px 0 4px; font-size:26px; }
+    header p { margin:0 auto; max-width:440px; opacity:.9; }
+    main { max-width:520px; margin:-20px auto 32px; padding:0 16px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px; margin-bottom:14px; }
+    .card h2 { margin:0 0 6px; font-size:18px; }
+    .btn { display:block; text-align:center; text-decoration:none; font-weight:700; font-size:17px;
+           padding:15px; border-radius:14px; margin-top:12px; }
+    .primary { background:var(--green); color:#fff; }
+    .amber { background:var(--amber); color:#1B2420; }
+    ol { margin:8px 0 0; padding-left:20px; }
+    .note { font-size:14px; color:#555; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../icons/Icon-192.png" alt="">
+    <h1>Serviços Angola</h1>
+    <p>Versão de teste. Obrigado por nos ajudar a experimentar antes do lançamento!</p>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Abrir no navegador</h2>
+      <p class="note">Funciona em qualquer telemóvel ou computador. No telemóvel, use “Adicionar ao ecrã principal” para ficar como uma aplicação.</p>
+      <a class="btn primary" href="../">Abrir a aplicação</a>
+    </div>
+    <div class="card">
+      <h2>Instalar no Android</h2>
+      <a class="btn amber" href="servicos-angola.apk" download>Descarregar a aplicação (APK)</a>
+      <ol class="note">
+        <li>Toque em “Descarregar” e abra o ficheiro.</li>
+        <li>Se o telemóvel pedir, permita “instalar de fontes desconhecidas” para o navegador.</li>
+        <li>Toque em “Instalar”. Esta versão é só para testes, ainda não está na Play Store.</li>
+      </ol>
+    </div>
+    <p class="note" style="text-align:center">Encontrou um problema? Toque em “Ajuda” dentro da aplicação e conte-nos.</p>
+  </main>
+</body>
+</html>
