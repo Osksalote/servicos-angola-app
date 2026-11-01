@@ -8,7 +8,7 @@
 //   is opened, or straight away when the person taps "Atualizar".
 // - Data from Supabase (professionals, messages...) is NOT saved here: it always
 //   comes fresh from the internet.
-const VERSION = '9e3cd5b64038';
+const VERSION = '6dddf644d3c0';
 const FILES = [
 ".last_build_id",
 "assets/AssetManifest.bin",
